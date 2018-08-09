@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="inventariosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="inventario">
+    <Key>
+      <PropertyRef Name="idinventario" />
+    </Key>
+    <Property Name="idinventario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idMaterial" Type="Int32" Nullable="false" />
+    <Property Name="cantidad" Type="Int32" Nullable="false" />
+    <Property Name="idTipoEstado" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="materiales" Relationship="Self.FK__inventari__idMat__182C9B23" FromRole="inventario" ToRole="materiales" />
+    <NavigationProperty Name="tipoestado" Relationship="Self.FK__inventari__idTip__173876EA" FromRole="inventario" ToRole="tipoestado" />
+  </EntityType>
+  <EntityType Name="materiales">
+    <Key>
+      <PropertyRef Name="idMaterial" />
+    </Key>
+    <Property Name="idMaterial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idTipo" Type="Int32" Nullable="false" />
+    <Property Name="CodMaterial" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="inventario" Relationship="Self.FK__inventari__idMat__182C9B23" FromRole="materiales" ToRole="inventario" />
+    <NavigationProperty Name="tipo" Relationship="Self.FK__materiale__idTip__1273C1CD" FromRole="materiales" ToRole="tipo" />
+  </EntityType>
+  <EntityType Name="tipo">
+    <Key>
+      <PropertyRef Name="idTipo" />
+    </Key>
+    <Property Name="idTipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="materiales" Relationship="Self.FK__materiale__idTip__1273C1CD" FromRole="tipo" ToRole="materiales" />
+  </EntityType>
+  <EntityType Name="tipoestado">
+    <Key>
+      <PropertyRef Name="idTipoEstado" />
+    </Key>
+    <Property Name="idTipoEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Descripcion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="inventario" Relationship="Self.FK__inventari__idTip__173876EA" FromRole="tipoestado" ToRole="inventario" />
+  </EntityType>
+  <Association Name="FK__inventari__idMat__182C9B23">
+    <End Role="materiales" Type="Self.materiales" Multiplicity="1" />
+    <End Role="inventario" Type="Self.inventario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="materiales">
+        <PropertyRef Name="idMaterial" />
+      </Principal>
+      <Dependent Role="inventario">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__inventari__idTip__173876EA">
+    <End Role="tipoestado" Type="Self.tipoestado" Multiplicity="1" />
+    <End Role="inventario" Type="Self.inventario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipoestado">
+        <PropertyRef Name="idTipoEstado" />
+      </Principal>
+      <Dependent Role="inventario">
+        <PropertyRef Name="idTipoEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__materiale__idTip__1273C1CD">
+    <End Role="tipo" Type="Self.tipo" Multiplicity="1" />
+    <End Role="materiales" Type="Self.materiales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipo">
+        <PropertyRef Name="idTipo" />
+      </Principal>
+      <Dependent Role="materiales">
+        <PropertyRef Name="idTipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="inventariosEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="inventario" EntityType="Self.inventario" />
+    <EntitySet Name="materiales" EntityType="Self.materiales" />
+    <EntitySet Name="tipo" EntityType="Self.tipo" />
+    <EntitySet Name="tipoestado" EntityType="Self.tipoestado" />
+    <AssociationSet Name="FK__inventari__idMat__182C9B23" Association="Self.FK__inventari__idMat__182C9B23">
+      <End Role="materiales" EntitySet="materiales" />
+      <End Role="inventario" EntitySet="inventario" />
+    </AssociationSet>
+    <AssociationSet Name="FK__inventari__idTip__173876EA" Association="Self.FK__inventari__idTip__173876EA">
+      <End Role="tipoestado" EntitySet="tipoestado" />
+      <End Role="inventario" EntitySet="inventario" />
+    </AssociationSet>
+    <AssociationSet Name="FK__materiale__idTip__1273C1CD" Association="Self.FK__materiale__idTip__1273C1CD">
+      <End Role="tipo" EntitySet="tipo" />
+      <End Role="materiales" EntitySet="materiales" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,158 @@
+﻿@model IEnumerable<SistemaInventarios.Models.tipo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+
+<h2>Tipos de Materiales</h2><br />
+<!--
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idTipo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idTipo }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idTipo })
+        </td>
+    </tr>
+}
+
+</table> -->
+
+
+<!--  USANDO LIBRERIAS DE ANGULAR (ng) -->
+<div class="container modal-content" ng-app="myApp">
+    <div class="modal-header" ng-controller="myCtrl">
+        <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#exampleModalLong">
+            <span class="glyphicon glyphicon-plus"></span> Ingresar Nuevo
+        </button>
+        <br />
+        <table class="tabla table-hover ">
+            <tr ng-repeat="t in milistado">
+                <td class="col-md-3">{{t.idTipo}}</td>
+                <td class="col-md-10">{{t.nombre}}</td>               
+                <td class="col-md-10"><button type="submit" class="btn btn-danger" ng-click="eliminar(t)"><span class="glyphicon glyphicon-trash"> Delete</span></button></td>
+            </tr>
+        </table>
+        <!--formulario de ingreso
+        <form ng-submit="guardar()">
+            <div class="form-group">
+                <label for="idTipos">id Tipo del Material</label>
+                <input type="number" class="form-control" id="idTipos" value="0" ng-model="datos.idTipos" placeholder="id del Tipo de Material">
+            </div>
+            <div class="form-group">
+                <label for="cantidad">Nombre</label>
+                <input type="text" ng-model="datos.nombre" class="form-control" id="nombre" placeholder="Descripción del tipo de Material">                
+            </div>
+            <br />
+            <button type="submit" class="btn btn-success">Ingresar</button>
+        </form>
+        <!-- fin formulario de ingreso-->
+
+        <!--uso de modal-->
+        <!-- Button trigger modal --> 
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Formulario de Ingreso de Tipos de Materiales</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-submit="guardar()">
+                            <div class="form-group" hidden>
+                                <label for="idTipos">id Tipo del Material</label>
+                                <input type="number" class="form-control" id="idTipos" value="0" ng-model="datos.idTipos" placeholder="id del Tipo de Material">
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidad">Nombre</label>
+                                <input type="text" ng-model="datos.nombre" class="form-control" id="nombre" placeholder="Descripción del tipo de Material">
+                            </div>
+                            <br />
+                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>                        
+                    </div>
+                </div>
+            </div>
+
+            <!--fin modal-->
+
+        </div> 
+</div> <!--end div segundo-->
+    </div><!-- end div primero -->
+
+
+
+
+<script type="text/javascript">
+    var app = angular.module('myApp', []);
+
+    app.controller('myCtrl', function ($scope, $http, $window) {
+        ///// FUNCION LISTAR /////////
+        $scope.milistado = []; //scope declara como publico
+        $scope.carga = function () {
+            $http.get("/TipoMateriales/listar").success(function (result) {
+                $scope.milistado = result; //asignamos valor de la lista con resultado
+            }).error(function (result) {
+                console.log(result); //en caso de que ocurra un error
+            });
+
+        }//end of carga function LISTAR
+        $scope.carga();
+
+        $scope.eliminar = function (invet) {
+            $http.post("/TipoMateriales/eliminar", { id : invet }).success(function (result) {
+                $scope.borrar = result;
+                $scope.carga();
+            }).error(function (e) {
+                console.log(e);
+            }) //end of error function
+        } //end of eliminar function
+
+        //////////////// guardar ////////////////////
+
+
+        $scope.datos = {};
+        $scope.guardar = function () {
+            $http.post('/TipoMateriales/guardar', $scope.datos)
+            .success(function (res) {
+                $scope.inventarioguardar = res;
+                $scope.datos = {};
+                $scope.carga();
+            }).error(function (data) {
+                console.log(data);
+            })
+        }
+
+
+        /////////////// fin guardar //////////////
+
+        
+    }//end of controller function
+    ); //end of appcontroller
+</script>

@@ -1,0 +1,42 @@
+﻿@model SistemaInventarios.Models.materiales
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>materiales</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CodMaterial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CodMaterial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tipo.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipo.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idMaterial }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

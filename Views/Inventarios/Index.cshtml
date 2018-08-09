@@ -1,0 +1,158 @@
+﻿@model IEnumerable < SistemaInventarios.Models.inventario > 
+
+
+@{    
+    ViewBag.Title = "Index";   
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.cantidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.materiales.CodMaterial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tipoestado.Descripcion)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.cantidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.materiales.CodMaterial)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tipoestado.Descripcion)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idinventario }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idinventario }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idinventario })
+        </td>
+    </tr>
+}
+
+</table>
+
+<!--  USANDO LIBRERIAS DE ANGULAR (ng) -->
+<div class="container modal-content" ng-app="myApp">
+    <div class="modal-header" ng-controller="myCtrl">
+        <table class="tabla table-hover ">
+            <tr ng-repeat="inventario in milistado">
+                <td>{{inventario.idinventario}}</td>
+                <td>{{inventario.idMaterial}}</td>
+                <td>{{inventario.cantidad}}</td>
+                <td>{{inventario.idTipoEstado}}</td>                
+                <td><button type="submit" class="btn btn-danger" ng-click="eliminar(inventario)"><span class="danger">delete</span></button></td>
+            </tr>            
+        </table>
+        <!--formulario de ingreso-->        
+            <form>
+                <div class="form-group">
+                    <label for="idmaterial">idMaterial</label>
+                    <!--input type="text" class="form-control" id="idmaterial" aria-describedby="emailHelp" placeholder="id del material">                    -->
+                    
+                        <select id="idmateriales" class="form-control" ng-model="datos.idMaterial">
+                            <option ng-repeat="m in listamateriales" value="{{m.idMaterial}}">                                    
+                                {{m.Descripcion}}
+                            </option>
+                        </select>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="cantidad">cantidad</label>
+                    <input type="number" class="form-control" id="cantidad" placeholder="cantidad">
+                    <small id="cantidadHelp" class="form-text text-muted">Ingrese solo valores numéricos</small>
+                </div>
+                <div class="form-check">
+                    <label for="tipoEstado">tipoEstado</label>
+
+                
+                </div>
+                <br />
+                <button type="submit" class="btn btn-success">Ingresar</button>
+            </form>        
+        <!-- fin formulario de ingreso-->
+        
+    </div> <!--end div segundo-->
+</div> <!-- end div primero -->
+
+
+
+
+<script type="text/javascript">
+    var app = angular.module('myApp', []);
+
+    app.controller('myCtrl', function ($scope, $http, $window) {
+
+        ////// LISTADO //////
+        $scope.milistado = []; //scope declara como publico
+        $scope.carga = function () {
+            $http.get("/Inventarios/listar").success(function (result) {
+                $scope.milistado = result; //asignamos valor de la lista con resultado
+            }).error(function (result) { 
+                console.log(result); //en caso de que ocurra un error
+            });
+            
+        }//end of carga function
+        $scope.carga();
+
+        $scope.eliminar = function (invet) {
+            $http.post("/Inventarios/eliminarinventario", { idinventario: invet }).success(function (result) {
+                $scope.borrar = result;
+                $scope.carga();
+            }).error(function (e) {
+                console.log(e);
+            }) //end of error function
+        } //end of eliminar function
+
+        //////////////// guardar ////////////////////
+
+
+        $scope.datos = {};
+        $scope.guardar = function () {
+            $http.post('/Inventarios/guardar', $scope.datos)
+            .success(function (res) {
+                $scope.inventarioguardar = res;
+                $scope.datos = {};
+                $scope.carga();
+            }).error(function (data) {
+                console.log(data);
+            })
+        }
+
+
+        /////////////// fin guardar //////////////
+
+        ///// FUNCION LISTAR MATERIALES /////////
+        $scope.listamateriales = []; 
+        $scope.materiales = function () {
+            $http.get("/Materiales/listarMateriales").success(function (r) {
+                $scope.listamateriales = r; //asignamos valor de la lista con resultado
+            }).error(function (r) {
+                console.log(r); //en caso de que ocurra un error
+            });
+
+        }//end of carga function LISTAR
+        $scope.materiales();
+    }//end of controller function        
+    ); //end of appcontroller
+</script>
+
+
+

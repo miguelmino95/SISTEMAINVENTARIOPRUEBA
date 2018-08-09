@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="inventariosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="inventario">
+          <Key>
+            <PropertyRef Name="idinventario" />
+          </Key>
+          <Property Name="idinventario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idMaterial" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="idTipoEstado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="materiales">
+          <Key>
+            <PropertyRef Name="idMaterial" />
+          </Key>
+          <Property Name="idMaterial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTipo" Type="int" Nullable="false" />
+          <Property Name="CodMaterial" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tipo">
+          <Key>
+            <PropertyRef Name="idTipo" />
+          </Key>
+          <Property Name="idTipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tipoestado">
+          <Key>
+            <PropertyRef Name="idTipoEstado" />
+          </Key>
+          <Property Name="idTipoEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__inventari__idMat__182C9B23">
+          <End Role="materiales" Type="Self.materiales" Multiplicity="1" />
+          <End Role="inventario" Type="Self.inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="materiales">
+              <PropertyRef Name="idMaterial" />
+            </Principal>
+            <Dependent Role="inventario">
+              <PropertyRef Name="idMaterial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__inventari__idTip__173876EA">
+          <End Role="tipoestado" Type="Self.tipoestado" Multiplicity="1" />
+          <End Role="inventario" Type="Self.inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoestado">
+              <PropertyRef Name="idTipoEstado" />
+            </Principal>
+            <Dependent Role="inventario">
+              <PropertyRef Name="idTipoEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__materiale__idTip__1273C1CD">
+          <End Role="tipo" Type="Self.tipo" Multiplicity="1" />
+          <End Role="materiales" Type="Self.materiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo">
+              <PropertyRef Name="idTipo" />
+            </Principal>
+            <Dependent Role="materiales">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="inventariosModelStoreContainer">
+          <EntitySet Name="inventario" EntityType="Self.inventario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="materiales" EntityType="Self.materiales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipo" EntityType="Self.tipo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipoestado" EntityType="Self.tipoestado" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__inventari__idMat__182C9B23" Association="Self.FK__inventari__idMat__182C9B23">
+            <End Role="materiales" EntitySet="materiales" />
+            <End Role="inventario" EntitySet="inventario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__inventari__idTip__173876EA" Association="Self.FK__inventari__idTip__173876EA">
+            <End Role="tipoestado" EntitySet="tipoestado" />
+            <End Role="inventario" EntitySet="inventario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__materiale__idTip__1273C1CD" Association="Self.FK__materiale__idTip__1273C1CD">
+            <End Role="tipo" EntitySet="tipo" />
+            <End Role="materiales" EntitySet="materiales" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="inventariosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="inventario">
+          <Key>
+            <PropertyRef Name="idinventario" />
+          </Key>
+          <Property Name="idinventario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idMaterial" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="idTipoEstado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="materiales" Relationship="Self.FK__inventari__idMat__182C9B23" FromRole="inventario" ToRole="materiales" />
+          <NavigationProperty Name="tipoestado" Relationship="Self.FK__inventari__idTip__173876EA" FromRole="inventario" ToRole="tipoestado" />
+        </EntityType>
+        <EntityType Name="materiales">
+          <Key>
+            <PropertyRef Name="idMaterial" />
+          </Key>
+          <Property Name="idMaterial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipo" Type="Int32" Nullable="false" />
+          <Property Name="CodMaterial" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="inventario" Relationship="Self.FK__inventari__idMat__182C9B23" FromRole="materiales" ToRole="inventario" />
+          <NavigationProperty Name="tipo" Relationship="Self.FK__materiale__idTip__1273C1CD" FromRole="materiales" ToRole="tipo" />
+        </EntityType>
+        <EntityType Name="tipo">
+          <Key>
+            <PropertyRef Name="idTipo" />
+          </Key>
+          <Property Name="idTipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="materiales" Relationship="Self.FK__materiale__idTip__1273C1CD" FromRole="tipo" ToRole="materiales" />
+        </EntityType>
+        <EntityType Name="tipoestado">
+          <Key>
+            <PropertyRef Name="idTipoEstado" />
+          </Key>
+          <Property Name="idTipoEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="inventario" Relationship="Self.FK__inventari__idTip__173876EA" FromRole="tipoestado" ToRole="inventario" />
+        </EntityType>
+        <Association Name="FK__inventari__idMat__182C9B23">
+          <End Role="materiales" Type="Self.materiales" Multiplicity="1" />
+          <End Role="inventario" Type="Self.inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="materiales">
+              <PropertyRef Name="idMaterial" />
+            </Principal>
+            <Dependent Role="inventario">
+              <PropertyRef Name="idMaterial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__inventari__idTip__173876EA">
+          <End Role="tipoestado" Type="Self.tipoestado" Multiplicity="1" />
+          <End Role="inventario" Type="Self.inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoestado">
+              <PropertyRef Name="idTipoEstado" />
+            </Principal>
+            <Dependent Role="inventario">
+              <PropertyRef Name="idTipoEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__materiale__idTip__1273C1CD">
+          <End Role="tipo" Type="Self.tipo" Multiplicity="1" />
+          <End Role="materiales" Type="Self.materiales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo">
+              <PropertyRef Name="idTipo" />
+            </Principal>
+            <Dependent Role="materiales">
+              <PropertyRef Name="idTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="inventariosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="inventario" EntityType="Self.inventario" />
+          <EntitySet Name="materiales" EntityType="Self.materiales" />
+          <EntitySet Name="tipo" EntityType="Self.tipo" />
+          <EntitySet Name="tipoestado" EntityType="Self.tipoestado" />
+          <AssociationSet Name="FK__inventari__idMat__182C9B23" Association="Self.FK__inventari__idMat__182C9B23">
+            <End Role="materiales" EntitySet="materiales" />
+            <End Role="inventario" EntitySet="inventario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__inventari__idTip__173876EA" Association="Self.FK__inventari__idTip__173876EA">
+            <End Role="tipoestado" EntitySet="tipoestado" />
+            <End Role="inventario" EntitySet="inventario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__materiale__idTip__1273C1CD" Association="Self.FK__materiale__idTip__1273C1CD">
+            <End Role="tipo" EntitySet="tipo" />
+            <End Role="materiales" EntitySet="materiales" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="inventariosModelStoreContainer" CdmEntityContainer="inventariosEntities">
+          <EntitySetMapping Name="inventario">
+            <EntityTypeMapping TypeName="inventariosModel.inventario">
+              <MappingFragment StoreEntitySet="inventario">
+                <ScalarProperty Name="idinventario" ColumnName="idinventario" />
+                <ScalarProperty Name="idMaterial" ColumnName="idMaterial" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="idTipoEstado" ColumnName="idTipoEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="materiales">
+            <EntityTypeMapping TypeName="inventariosModel.materiales">
+              <MappingFragment StoreEntitySet="materiales">
+                <ScalarProperty Name="idMaterial" ColumnName="idMaterial" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="CodMaterial" ColumnName="CodMaterial" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipo">
+            <EntityTypeMapping TypeName="inventariosModel.tipo">
+              <MappingFragment StoreEntitySet="tipo">
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoestado">
+            <EntityTypeMapping TypeName="inventariosModel.tipoestado">
+              <MappingFragment StoreEntitySet="tipoestado">
+                <ScalarProperty Name="idTipoEstado" ColumnName="idTipoEstado" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
